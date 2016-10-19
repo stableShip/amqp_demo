@@ -30,7 +30,7 @@ app.post("/message/post", function (req, res) {
 
         yield channel.assertQueue(q);
 
-        var result = channel.sendToQueue(q, new Buffer(JSON.stringify(req.body)));
+        var result = channel.sendToQueue(q, new Buffer(JSON.stringify(req.body)), { persistent : true });
         console.log("result:", result);
         res.send(result);
         }catch(err){

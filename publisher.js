@@ -14,7 +14,7 @@ co(function* () {
         var num = 0;
         setInterval(function () {
             console.log("publish to mq", num + 1);
-            channel.sendToQueue(q, new Buffer(++num + ""));
+            channel.sendToQueue(q, new Buffer(++num + ""), { persistent : true });
         }, 1000)
     } catch (err) {
         console.log(err);

@@ -1,3 +1,5 @@
+"use strict";
+
 var co = require('co');
 var amqp = require('amqplib');
 
@@ -8,10 +10,13 @@ class AmqpUtil {
      */
     static getConn() {
         return co(function* () {
-            var connect = yield amqp.connect('amqp://localhost');
-            return connect;
+            if (!AmqpUtil.connect) {
+                var connect = yield amqp.connect('amqp://localhost');
+                AmqpUtil.connect = connect;
+            }
+            return AmqpUtil.connect;
         })
     }
-
-    
 }
+
+module.exports = AmqpUtil;

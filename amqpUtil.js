@@ -12,4 +12,6 @@ class AmqpUtil {
             return connect;
         })
     }
+
+    
 }

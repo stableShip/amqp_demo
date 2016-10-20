@@ -2,11 +2,13 @@ var co = require('co');
 var amqp = require('amqplib');
 
 co(function* () {
+    var connect;
+    var channel1;
     try {
         var q = 'tasks';
-        var connect1 = yield amqp.connect('amqp://localhost');
+        connect1 = yield amqp.connect('amqp://localhost');
 
-        var channel1 = yield connect1.createChannel();
+        channel1 = yield connect1.createChannel();
 
         yield channel1.assertQueue(q);
 
@@ -21,5 +23,5 @@ co(function* () {
         });
     } catch (err) {
         console.log(err);
-    }
+    } 
 })

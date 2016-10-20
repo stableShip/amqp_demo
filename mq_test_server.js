@@ -21,11 +21,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post("/message/post", function (req, res) {
     co(function* () {
+        var channel;
         try {
             var q = 'tasks';
-
             var connect = yield amqpUtil.getConn();
-            var channel = yield connect.createChannel();
+            channel = yield connect.createChannel();
 
             yield channel.assertQueue(q);
 
@@ -35,6 +35,8 @@ app.post("/message/post", function (req, res) {
         } catch (err) {
             console.log(err);
             res.send("system error");
+        } finally {
+            channel && channel.close();
         }
     })
 });

@@ -24,7 +24,7 @@ app.post("/message/post", function (req, res) {
         var channel;
         try {
             var q = 'tasks';
-            var connect = yield amqpUtil.getConn();
+            var connect = yield amqpUtil.getConnAsync();
             channel = yield connect.createChannel();
 
             yield channel.assertQueue(q);

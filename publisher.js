@@ -1,21 +1,30 @@
 var co = require('co');
 var amqp = require('amqplib');
+var config = require('./config');
+var amqpUtil = require('./amqpUtil');
 
 co(function* () {
-    var connect;
-    var channel;
     try {
-        connect = yield amqp.connect('amqp://localhost');
-        channel = yield connect.createChannel();
-        var q = 'tasks';
-        yield channel.assertQueue(q);
-
+        // connect = yield amqp.connect(config.rabbitMqUrl);
+        // channel = yield connect.createChannel();
+        // setInterval(function () {
+        // yield amqpUtil.sendToPointAsync(queue, JSON.stringify({test: "测试"}));
+        // }, 1000);
+        // yield channel.assertQueue(q);
+        // var num = 0;
+        // setInterval(function () {
+        //     console.log("publish to mq", num + 1);
+        //     channel.sendToQueueAsync(q, new Buffer(++num + ""), { persistent: true });
+        // }, 1000);
+        // channel && channel.close();
+        var queue = 'nodeToJava';
         var num = 0;
-        setInterval(function () {
+        setInterval(co.wrap(function*() {
             console.log("publish to mq", num + 1);
-            channel.sendToQueue(q, new Buffer(++num + ""), { persistent: true });
-            channel && channel.close();
-        }, 1000)
+            var result = yield amqpUtil.sendToPointAsync(queue, JSON.stringify({test: "测试"}));
+            console.log(result);
+        }), 2000);
+
     } catch (err) {
         console.log(err);
     } 

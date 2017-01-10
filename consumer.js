@@ -5,10 +5,14 @@ var amqpUtil = require('./amqpUtil');
 co(function* () {
     try {
         var queue = "nodeToJava";
-        amqpUtil.consumeQueueAsync(queue, function* (msg) {
+        // yield amqpUtil.consumeQueueAsync(queue, function (msg) {
+        //     console.log(msg.content.toString());
+        // });
+        var exchange = "test";
+        yield amqpUtil.consumeExchangeAsync(exchange, function (msg) {
             console.log(msg.content.toString());
-        });
+        })
     } catch (err) {
-        console.log(err);
+        console.log(err, err.status);
     } 
 });
